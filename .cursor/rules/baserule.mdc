@@ -1,0 +1,71 @@
+---
+description: NZ BWoF Compliance Hub - Core Development Rules (audit, UI, code, backend, feedback)
+alwaysApply: true
+---
+
+# NZ BWoF Compliance Hub - Core Development Rules
+
+## 1. 法律合规与证据完整性 (Audit Integrity)
+
+**不可篡改证据链**: 任何证据（Evidence）提交必须记录 `captured_at` (实际发生时间) 和 `synced_at` (存入数据库时间)。
+
+**CS/12A 校验逻辑**: 系统必须严格区分“蓝图数据 (Compliance Schedule)”与“结果数据 (Form 12A)”。解析蓝图时，若 SS 编号不在官方标准库内，必须标记 `is_custom_ss: true` 并要求人工二次确认。
+
+**状态回溯**: 禁止物理删除核心合规记录，必须使用逻辑删除或状态标记，确保审计时可追溯历史变动。
+
+---
+
+## 2. 样式规范与 UI 表现 (UI & Visual Standards)
+
+### 2.1 视觉层级与合规看板 (Compliance Matrix UX)
+
+- **状态红绿灯**: 严禁硬编码状态颜色。
+  - Pass/Verified: `theme.colors.success` (Green)
+  - Warning/Pending: `theme.colors.warning` (Amber)
+  - Fail/Gap: `theme.colors.danger` (Red)
+- **网格系统 (The Grid)**: 证据矩阵必须具备“固定列/固定行”逻辑，确保在大楼系统较多时，Admin 始终能看清当前的系统编号与月份。
+- **空状态处理**: 所有任务格子（Evidence Slot）在未填充时，必须显示虚线框占位符，引导点击上传。
+
+### 2.2 Shadcn/ui & Tailwind 约束
+
+- **组件原子化**: 优先使用 `@/components/ui`。禁止在业务组件中直接书写复杂的 SVG。
+- **Tailwind 限制**: 遵循单一元素严禁超过 6 个 Tailwind 类名。超过者必须抽离为局部变量或使用 `cn()` 函数进行语义化组合，或在 `.module.css` 中定义。
+- **触控与密度**: 管理端界面应保持“紧凑但可读”。列表行高 `h-12`，字体大小以 `text-sm` (14px) 为基准，关键数字（如过期天数）加粗显示。
+
+---
+
+## 3. 项目结构与编码规范 (Code Architecture)
+
+### 3.1 Next.js 15 App Router 规范
+
+- **文件夹组件模式 (Folder-Based)**:
+  - 路径：`src/components/[Category]/[ComponentName]/`
+  - 必须包含：`index.tsx` (逻辑), `[ComponentName].module.css` 或 `styles.ts` (样式)。
+- **路由命名规则**: 所有页面必须遵循 `(group)/[feature]/page.tsx` 模式，确保文件名唯一。样式文件应在同一目录下：`[feature].styles.ts`。
+- **Server/Client 组件隔离**: 核心数据读取必须在 Server Component 中完成；所有交互操作（上传、点击格子）必须抽离至带有 `'use client'` 声明的原子组件中。
+
+### 3.2 类型安全与数据定义 (TypeScript)
+
+- **零 any 准则**: 所有数据接口必须在 `src/types/` 下定义。
+- **JSONB 强约束**: 存储在 PostgreSQL JSONB 字段中的 CS 规则或 12A 数据，必须在代码层面有对应的 `interface` 定义。写入数据库前必须经过验证。
+- **模型驱动**: 所有对 Supabase 的调用必须参考 `src/lib/database.types.ts`。
+
+---
+
+## 4. 后端架构与中转逻辑 (Supabase & Edge Functions)
+
+### 4.1 生产环境安全性
+
+- **RLS 强制执行**: 严禁关闭 Row Level Security。所有表必须具备 `auth.uid() = user_id` 或 `organization_id` 的校验策略。
+- **后端中转 (Edge Functions)**: 涉及到调用 Gemini API、处理重型 PDF 解析或敏感密钥管理的操作，必须放在 Supabase Edge Functions 中。前端严禁直接持有 Gemini API Key。
+
+### 4.2 配置驱动 (Config-Driven)
+
+所有的 SS 系统定义、检查频率转换逻辑（如 Monthly -> 12 slots）必须集中在配置类中管理，严禁硬编码在业务逻辑中。
+
+---
+
+## 5. 交互反馈与加载状态 (Feedback Loop)
+
+- **乐观 UI (Optimistic UI)**: 在手动归档文件时，应先在前端更新格子的“已填充”状态，背景静默上传。若失败，再回滚并弹出提示。
+- **AI 处理反馈**: 当上传 12A 进行解析时，必须提供 Skeleton 屏或 “Processing AI...” 的进度反馈，告知用户系统正在从文档中提取蓝图。
