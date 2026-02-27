@@ -1,0 +1,59 @@
+{
+  "common": {
+    "appName": "NZ BWoF 合规中心",
+    "localeEn": "EN",
+    "localeZh": "中文"
+  },
+  "LoginPage": {
+    "title": "NZ BWoF 合规中心"
+  },
+  "LoginForm": {
+    "cardTitle": "登录",
+    "emailPlaceholder": "工作邮箱",
+    "passwordPlaceholder": "密码（不填则发送登录链接）",
+    "submitButton": "登录",
+    "sendingLink": "正在发送...",
+    "signingIn": "登录中...",
+    "toastLoginSuccessTitle": "登录成功",
+    "toastLoginSuccessDescription": "正在跳转…",
+    "toastEmailNotAllowedTitle": "邮箱未授权",
+    "toastEmailNotAllowedDescription": "您的邮箱域名未在授权范围内，请联系管理员。",
+    "toastErrorTitle": "错误",
+    "toastSuccessTitle": "请查收邮件",
+    "toastSuccessDescription": "请到您的收件箱查收登录链接。",
+    "noAccount": "没有账号？",
+    "goRegister": "立即注册"
+  },
+  "DashboardPage": {
+    "title": "工作台",
+    "welcome": "您已登录。"
+  },
+  "UnauthorizedPage": {
+    "title": "暂无访问权限",
+    "messageZh": "未授权，请联系管理员。",
+    "messageEn": "Your account is not yet linked to an organization. Please contact your administrator to get access to the NZ BWoF Compliance Hub.",
+    "backToSignIn": "返回登录"
+  },
+  "RegisterPage": {
+    "title": "创建账号"
+  },
+  "RegisterForm": {
+    "cardTitle": "创建账号",
+    "emailPlaceholder": "工作邮箱",
+    "passwordPlaceholder": "密码",
+    "confirmPasswordPlaceholder": "确认密码",
+    "submitButton": "注册",
+    "submitting": "注册中...",
+    "noAccount": "没有账号？",
+    "goRegister": "立即注册",
+    "passwordMismatch": "密码不一致",
+    "passwordTooShort": "密码长度不足（至少 6 位）",
+    "invalidEmail": "请输入有效的邮箱地址",
+    "registerSuccess": "注册成功，请登录",
+    "registerRequestSent": "注册请求已发送",
+    "toastErrorTitle": "错误",
+    "toastEmailNotAllowedDescription": "您的邮箱域名未在授权范围内，请联系管理员。",
+    "haveAccount": "已有账号？",
+    "goLogin": "去登录"
+  }
+}

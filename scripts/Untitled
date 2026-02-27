@@ -1,0 +1,47 @@
+既然 Network 里面什么请求都没有，这意味着问题根本没走到浏览器发请求那一步，而是 Next.js 本地开发服务器在编译或渲染初始 HTML 时彻底卡死了（死锁）。
+
+这通常是因为：
+
+依赖树残缺：少装了必要的包（比如 Tailwind、PostCSS 等），导致编译引擎在后台无限等待。
+
+构建缓存损坏：.next 文件夹里的某些文件错乱。
+
+顶层阻塞 (Top-level Blocking)：layout.tsx 或 page.tsx 里有死循环，或者在 Server Component 里写了无法解析的异步 await。
+
+请直接把下面这段 Prompt 复制并发送给 Cursor，让它作为一个“急救专家”来全面清理和修复环境：
+
+复制以下指令发送给 Cursor：
+“🚨 紧急排查：Next.js 15 本地服务无限假死
+
+目前项目运行 npm run dev 后，浏览器无限转圈。我已经禁用了 middleware.ts，并且浏览器 Network 面板没有任何请求发出。这说明 Next.js 在服务端编译或渲染时被阻塞了。
+
+请帮我按以下步骤彻底清理并修复环境：
+
+第一步：清理僵尸缓存与依赖
+请帮我生成终端命令（我会在本地执行）：
+
+删除 node_modules 文件夹。
+
+删除 .next 缓存文件夹。
+
+删除 package-lock.json。
+
+第二步：补齐并重装所有必需依赖
+我之前的 package.json 似乎缺失了很多包。请帮我生成安装命令，必须包含：
+
+核心框架：next, react, react-dom
+
+样式与 UI：tailwindcss, postcss, autoprefixer, lucide-react, clsx, tailwind-merge
+
+数据库与鉴权：@supabase/supabase-js, @supabase/ssr
+
+第三步：排查根组件死锁
+请检查 src/app/layout.tsx 和 src/app/page.tsx。
+
+确保里面没有导致死循环的代码。
+
+确保没有悬挂的 await（比如没有 catch 错误的异步数据获取）。
+
+请将 src/app/page.tsx 暂时替换为一个最极简的、没有任何外部依赖的静态组件（例如只输出一行 <div className="p-10 text-2xl">BWoF Grid - System Booting...</div>），用来验证服务器是否能正常吐出页面。
+
+请给出清理和重装的终端命令，并提供极简版 page.tsx 的代码。”

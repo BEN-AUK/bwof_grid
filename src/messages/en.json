@@ -1,0 +1,59 @@
+{
+  "common": {
+    "appName": "NZ BWoF Compliance Hub",
+    "localeEn": "EN",
+    "localeZh": "中文"
+  },
+  "LoginPage": {
+    "title": "NZ BWoF Compliance Hub"
+  },
+  "LoginForm": {
+    "cardTitle": "Sign in",
+    "emailPlaceholder": "Work email",
+    "passwordPlaceholder": "Password (leave blank to receive login link)",
+    "submitButton": "Sign in",
+    "sendingLink": "Sending link...",
+    "signingIn": "Signing in...",
+    "toastLoginSuccessTitle": "Signed in",
+    "toastLoginSuccessDescription": "Redirecting…",
+    "toastEmailNotAllowedTitle": "Email not allowed",
+    "toastEmailNotAllowedDescription": "Your email domain is not authorized. Contact your administrator.",
+    "toastErrorTitle": "Error",
+    "toastSuccessTitle": "Check your inbox",
+    "toastSuccessDescription": "Check your inbox for the login link!",
+    "noAccount": "Don't have an account?",
+    "goRegister": "Sign up"
+  },
+  "DashboardPage": {
+    "title": "Dashboard",
+    "welcome": "Welcome. You are signed in."
+  },
+  "UnauthorizedPage": {
+    "title": "Access not assigned",
+    "messageZh": "未授权，请联系管理员。",
+    "messageEn": "Your account is not yet linked to an organization. Please contact your administrator to get access to the NZ BWoF Compliance Hub.",
+    "backToSignIn": "Back to sign in"
+  },
+  "RegisterPage": {
+    "title": "Create account"
+  },
+  "RegisterForm": {
+    "cardTitle": "Create account",
+    "emailPlaceholder": "Work email",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "submitButton": "Register",
+    "submitting": "Registering...",
+    "noAccount": "Don't have an account?",
+    "goRegister": "Sign up",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "invalidEmail": "Please enter a valid email address",
+    "registerSuccess": "Registration successful. Please sign in.",
+    "registerRequestSent": "Registration request sent",
+    "toastErrorTitle": "Error",
+    "toastEmailNotAllowedDescription": "Your email domain is not authorized. Contact your administrator.",
+    "haveAccount": "Already have an account?",
+    "goLogin": "Sign in"
+  }
+}
