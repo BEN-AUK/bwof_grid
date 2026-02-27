@@ -21,7 +21,7 @@ jobs:
       - name: Push Database Migrations
         # 注意：这里直接把你的敏感信息写在了脚本里
         run: |
-          supabase link --project-ref exbymqyakzxibltikwum --password 'X3LK4m3IjhkRTNrrsbp_29719731f42aa788eacad8977134082253678719'
+          supabase link --project-ref exbymqyakzxibltikwum --password 'z5RgI7gs9av95AEj'
           supabase db push --password 'X3LK4m3IjhkRTNrr'
         env:
           # 只有这个 Token 建议保留在环境变量格式，或者你也直接写死
