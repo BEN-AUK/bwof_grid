@@ -1,0 +1,14 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.input {
+  flex: 1;
+}
+
+.submit {
+  width: 100%;
+}
