@@ -1,3 +1,21 @@
+-- 1. 删除限制过严的单列唯一约束
+-- 这将允许 standard_code 在表中重复（只要 version 不同）
+ALTER TABLE base.compliance_standard 
+DROP CONSTRAINT IF EXISTS base_compliance_standard_standard_code_key;
+
+-- 2. 验证并确保联合唯一约束存在（如果不存在则添加）
+-- 这样可以确保同一个标准的同一个版本不会被重复录入
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint 
+        WHERE conname = 'base_compliance_standard_code_version_key'
+    ) THEN
+        ALTER TABLE base.compliance_standard 
+        ADD CONSTRAINT base_compliance_standard_code_version_key UNIQUE (standard_code, version);
+    END IF;
+END $$;
+
 -- =========================================================================
 -- 模块: Compliance Library (Full Production Data Load v3)
 -- 目标 Schema: base
