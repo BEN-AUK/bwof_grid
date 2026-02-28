@@ -27,10 +27,10 @@ jobs:
         with:
           version: latest
 
-      # 3. 连接远程项目并推送 Migration 脚本
+      # 3. 连接远程项目并推送 Migration 脚本 
       - name: Push Database Migrations
         env:
-          # 确保这里的变量名和 GitHub Settings 里的完全一致
+          # 确保这里的变量名和 GitHub Settings 里的完全一致！
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
           supabase link --project-ref "$SUPABASE_PROJECT_ID" --password "$SUPABASE_DB_PASSWORD"
