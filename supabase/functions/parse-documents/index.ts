@@ -1,5 +1,8 @@
 /// <reference path="./deno.d.ts" />
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { GEMINI_API_URL } from "./config.ts"
+import { processFiles } from "./parser.service.ts"
+import { SYSTEM_PROMPTS } from "./prompts.ts"
 
 // --- 资源限制配置 ---
 const MAX_FILES = 5
@@ -51,23 +54,16 @@ serve(async (req) => {
       }
     }
 
-    // 模拟 AI 提取逻辑 (下一步接入真实的 LLM 调用)
-    const results = await Promise.all(
-      files.map(async (file) => {
-        return {
-          original_name: file.name,
-          extracted_name: `AI_PROCESSED_${file.name.split(".")[0]}`,
-          type: file.type,
-          size: file.size,
-        }
-      })
-    )
+    const config = { url: GEMINI_API_URL }
+    const prompt = { text: SYSTEM_PROMPTS.DOCUMENT_IDENTIFIER }
+    const results = await processFiles(files, apiKey, config, prompt)
 
     return new Response(JSON.stringify({ success: true, data: results }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     })
   } catch (error) {
     console.error("Function error:", error)
+    // 捕获 processFiles 内 fetch / JSON 解析等所有错误并返回
     const message = error instanceof Error ? error.message : "Unknown error"
     return jsonError(500, "INTERNAL_ERROR", message)
   }
