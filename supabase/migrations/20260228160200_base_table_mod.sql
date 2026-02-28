@@ -12,10 +12,6 @@ ADD CONSTRAINT base_compliance_standard_code_version_key UNIQUE (standard_code, 
 ALTER TABLE public.base_main_category 
 ADD COLUMN IF NOT EXISTS sort_order int2 DEFAULT 0;
 
--- 3. 更新 base_sub_category (子分类表)
--- 增加 ss_code 的唯一性约束，确保系统代码不重复
-ALTER TABLE public.base_sub_category 
-ADD CONSTRAINT base_sub_category_ss_code_key UNIQUE (ss_code);
 
 -- 增加是否强制项标记
 ALTER TABLE public.base_sub_category 
