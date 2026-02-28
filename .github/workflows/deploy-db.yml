@@ -33,5 +33,5 @@ jobs:
           # 确保这里的变量名和 GitHub Settings 里的完全一致！
           SUPABASE_ACCESS_TOKEN: 'sbp_516df116bf8b7b7c9fda58f538744d4199f7f34b'
         run: |
-          supabase link --project-ref exbymqyakzxibltikwum --password 'AbETZ9g6ZBSu1EPo'
+          supabase link --project-ref "$SUPABASE_PROJECT_ID" --password "$SUPABASE_DB_PASSWORD"
           supabase db push --password 'AbETZ9g6ZBSu1EPo'
