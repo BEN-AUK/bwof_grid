@@ -1,4 +1,42 @@
 
+-- ==========================================
+-- 5. 业主详细信息表 (Owners)
+-- ==========================================
+CREATE TABLE setup.owners (
+    id uuid NOT NULL DEFAULT gen_random_uuid(),
+    organization_id uuid NOT NULL, -- 租户隔离锚点
+    
+    -- 基础信息 (参照 PDF 截图字段)
+    name text NOT NULL,            -- Name of Owner (必填)
+    contact_person text,           -- 联系人
+    email text,                    -- Mailing Address 里的 Email
+    phone text,                    -- Phone/Mobile
+    mailing_address text,          -- Mailing Address 文本
+    
+    -- 审计字段 (应用层注入)
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by_id uuid NOT NULL,
+    last_modified_by_id uuid NOT NULL,
+
+    CONSTRAINT owners_pkey PRIMARY KEY (id),
+    CONSTRAINT owners_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES setup.organizations(id) ON DELETE CASCADE
+);
+
+-- 绑定时间戳触发器
+CREATE TRIGGER handle_updated_at_owners 
+    BEFORE UPDATE ON setup.owners 
+    FOR EACH ROW EXECUTE PROCEDURE setup.set_updated_at();
+
+-- 开启 RLS 并设置组织隔离
+ALTER TABLE setup.owners ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage owners in their organization" ON setup.owners
+    FOR ALL
+    USING (
+        organization_id = (SELECT organization_id FROM setup.profiles WHERE id = auth.uid())
+    );
+
     -- ==========================================
 -- 6. 建筑/物业表 (Buildings) - V2 重构版
 -- 职责：存储符合 NZ Building Act 要求的核心合规属性
